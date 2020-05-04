@@ -20,7 +20,7 @@ export default class App extends Component {
         </View>
         <View style={styles.bodyContainer}>
           {/* Regular progress bar */}
-          <Text style={{ color: "#FFF", marginTop: 10, marginBottom: 10 }}>Test 1</Text>
+          <Text style={{ color: "#FFF", marginTop: 10, marginBottom: 10 }}>Test 1 - Progress bar</Text>
           <Progress.Bar
             animated={true}
             progress={0.7}
@@ -37,12 +37,12 @@ export default class App extends Component {
           />
 
           {/* Shimmer on Text */}
-          <Text style={{ color: "#FFF", marginTop: 10, marginBottom: 10 }}>Test 2</Text>
+          <Text style={{ color: "#FFF", marginTop: 10, marginBottom: 10 }}>Test 2 - Shimmer effect</Text>
           <Shimmer direction={"right"} autoRun={true} style={{ width: 180, height: 40 }}>
             <Text style={{ fontSize: 30, color: "#FFF" }}>.........................</Text>
           </Shimmer>
 
-          <Text style={{ color: "#FFF", marginTop: 10, marginBottom: 10 }}>Test 3</Text>
+          <Text style={{ color: "#FFF", marginTop: 10, marginBottom: 10 }}>Test 3 - Shimmer effect + progress bar</Text>
           {/* Shimmer on View with Text. Shimmer isn't working */}
           <Shimmer direction={"right"} autoRun={true} style={{ width: 180, height: 40 }}>
             <View style={{ backgroundColor: "green", width: 180, height: 40 }}>
@@ -50,13 +50,13 @@ export default class App extends Component {
             </View>
           </Shimmer>
 
-          <Text style={{ color: "#FFF", marginTop: 10, marginBottom: 10 }}>Test 4</Text>
+          <Text style={{ color: "#FFF", marginTop: 10, marginBottom: 10 }}>Test 4 - Shimmer on view</Text>
           {/* Shimmer on View without Text. Shimmer isn't working */}
           <Shimmer direction={"right"} autoRun={true} style={{ width: 180, height: 40 }}>
             <View style={{ backgroundColor: "green", width: 180, height: 40 }} />
           </Shimmer>
 
-          <Text style={{ color: "#FFF", marginTop: 10, marginBottom: 10 }}>Test 5</Text>
+          <Text style={{ color: "#FFF", marginTop: 10, marginBottom: 10 }}>Test 5 - Shimmer + Linear gradient</Text>
           {/* Shimmer + Linear Gradient. Shimmer isn't working */}
           <Shimmer direction={"right"} >
             <LinearGradient colors={['#397C5D', '#37DD5D']} start={[0.0, 0.5]} end={[1.0, 0.5]} locations={[0.0, 1.0]} style={styles.linearGradient}>
@@ -65,7 +65,7 @@ export default class App extends Component {
           </Shimmer>
 
 
-          <Text style={{ color: "#FFF", marginTop: 10, marginBottom: 10 }}>Test 6</Text>
+          <Text style={{ color: "#FFF", marginTop: 10, marginBottom: 10 }}>Test 6 - Linear gradient + Shimmer</Text>
           {/* Shimmer + Linear Gradient. Shimmer isn't working */}
           <LinearGradient colors={['#397C5D', '#37DD5D']} start={[0.0, 0.5]} end={[1.0, 0.5]} locations={[0.0, 1.0]} style={styles.linearGradient}>
             <Shimmer direction={"right"} >
@@ -73,7 +73,7 @@ export default class App extends Component {
             </Shimmer>
           </LinearGradient>
 
-          <Text style={{ color: "#FFF", marginTop: 10, marginBottom: 10 }}>Test 7</Text>
+          <Text style={{ color: "#FFF", marginTop: 10, marginBottom: 10 }}>Test 7 - Shimmer + Image</Text>
           <Shimmer autoRun={true} direction={"right"} >
             <Image source={shimmerBg} />
           </Shimmer>
