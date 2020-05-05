@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   Dimensions,
   Animated,
+  ScrollView,
 } from 'react-native';
 
 import * as Progress from 'react-native-progress';
@@ -18,7 +19,21 @@ var {windowWidth} = Dimensions.get('window');
 var shimmerBg = require('./transparent.png');
 
 export default class App extends Component {
-  state = {progress: 0.5};
+  state = {progress: 0.5, progressStatus: 50};
+  anim = new Animated.Value(0);
+  componentDidMount() {
+    this.onAnimate();
+  }
+  onAnimate = () => {
+    this.anim.addListener(({value}) => {
+      this.setState({progressStatus: parseInt(value, 10)});
+    });
+    Animated.timing(this.anim, {
+      toValue: 100,
+      duration: 50000,
+    }).start();
+  };
+
   render() {
     const {progress} = this.state;
     return (
@@ -26,19 +41,78 @@ export default class App extends Component {
         <View style={styles.headerContainer}>
           <Text style={styles.header}>Battery</Text>
         </View>
-        <View style={styles.bodyContainer}>
-          {/* Regular progress bar */}
-          <Text style={{color: '#FFF', marginTop: 10, marginBottom: 10}}>
-            Test 0
-          </Text>
-          <Shimmer direction={'right'}>
+        <ScrollView>
+          <View style={styles.bodyContainer}>
+            <Text style={{color: '#FFF', marginTop: 10, marginBottom: 10}}>
+              New Test - Animated View with Shimmer
+            </Text>
+            <View
+              style={{
+                backgroundColor: '#fff',
+                borderColor: '#fff',
+                borderWidth: 1,
+                width: 200,
+              }}>
+              <Shimmer direction={'right'}>
+                <Animated.View
+                  style={[
+                    styles.inner,
+                    {width: this.state.progressStatus + '%'},
+                  ]}
+                />
+              </Shimmer>
+              <Animated.Text style={styles.label}>
+                {this.state.progressStatus}%
+              </Animated.Text>
+            </View>
+
+            {/* Regular progress bar */}
+            <Text style={{color: '#FFF', marginTop: 10, marginBottom: 10}}>
+              Test 0
+            </Text>
+            <Shimmer direction={'right'}>
+              <Progress.Bar
+                animated={true}
+                progress={progress}
+                color={'green'}
+                unfilledColor={'grey'}
+                borderWidth={1}
+                borderColor={'#fff'}
+                width={200}
+                height={50}
+                //borderRadius={3}
+                useNativeDriver={true}
+                // animationConfig
+                animationType={'timing'}
+              />
+            </Shimmer>
+            <View style={styles.buttonView}>
+              <Text
+                onPress={() =>
+                  this.setState({progress: progress <= 0 ? 0 : progress - 0.1})
+                }
+                style={styles.buttonText}>
+                Minus
+              </Text>
+              <Text
+                onPress={() =>
+                  this.setState({progress: progress >= 1 ? 1 : progress + 0.1})
+                }
+                style={styles.buttonText}>
+                Plus
+              </Text>
+            </View>
+
+            <Text style={{color: '#FFF', marginTop: 10, marginBottom: 10}}>
+              Test 1 - Progress bar
+            </Text>
             <Progress.Bar
               animated={true}
-              progress={progress}
+              progress={0.7}
               color={'green'}
               unfilledColor={'grey'}
-              borderWidth={1}
-              borderColor={'#fff'}
+              borderWidth={0}
+              borderColor={'#111117'}
               width={200}
               height={50}
               //borderRadius={3}
@@ -46,117 +120,85 @@ export default class App extends Component {
               // animationConfig
               animationType={'timing'}
             />
-          </Shimmer>
-          <View style={styles.buttonView}>
-            <Text
-              onPress={() =>
-                this.setState({progress: progress <= 0 ? 0 : progress - 0.1})
-              }
-              style={styles.buttonText}>
-              Minus
+            {/* Shimmer on Text */}
+            <Text style={{color: '#FFF', marginTop: 10, marginBottom: 10}}>
+              Test 2 - Shimmer effect
             </Text>
-            <Text
-              onPress={() =>
-                this.setState({progress: progress >= 1 ? 1 : progress + 0.1})
-              }
-              style={styles.buttonText}>
-              Plus
-            </Text>
-          </View>
-
-          <Text style={{color: '#FFF', marginTop: 10, marginBottom: 10}}>
-            Test 1 - Progress bar
-          </Text>
-          <Progress.Bar
-            animated={true}
-            progress={0.7}
-            color={'green'}
-            unfilledColor={'grey'}
-            borderWidth={0}
-            borderColor={'#111117'}
-            width={200}
-            height={50}
-            //borderRadius={3}
-            useNativeDriver={true}
-            // animationConfig
-            animationType={'timing'}
-          />
-          {/* Shimmer on Text */}
-          <Text style={{color: '#FFF', marginTop: 10, marginBottom: 10}}>
-            Test 2 - Shimmer effect
-          </Text>
-          <Shimmer
-            direction={'right'}
-            autoRun={true}
-            style={{width: 180, height: 40}}>
-            <Text style={{fontSize: 30, color: '#FFF'}}>
-              .........................
-            </Text>
-          </Shimmer>
-
-          <Text style={{color: '#FFF', marginTop: 10, marginBottom: 10}}>
-            Test 3 - Shimmer effect + progress bar
-          </Text>
-          {/* Shimmer on View with Text. Shimmer isn't working */}
-          <Shimmer
-            direction={'right'}
-            autoRun={true}
-            style={{width: 180, height: 40}}>
-            <View style={{backgroundColor: 'green', width: 180, height: 40}}>
+            <Shimmer
+              direction={'right'}
+              autoRun={true}
+              style={{width: 180, height: 40}}>
               <Text style={{fontSize: 30, color: '#FFF'}}>
                 .........................
               </Text>
-            </View>
-          </Shimmer>
+            </Shimmer>
 
-          <Text style={{color: '#FFF', marginTop: 10, marginBottom: 10}}>
-            Test 4 - Shimmer on view
-          </Text>
-          {/* Shimmer on View without Text. Shimmer isn't working */}
-          <Shimmer
-            direction={'right'}
-            autoRun={true}
-            style={{width: 180, height: 40}}>
-            <View style={{backgroundColor: 'green', width: 180, height: 40}} />
-          </Shimmer>
+            <Text style={{color: '#FFF', marginTop: 10, marginBottom: 10}}>
+              Test 3 - Shimmer effect + progress bar
+            </Text>
+            {/* Shimmer on View with Text. Shimmer isn't working */}
+            <Shimmer
+              direction={'right'}
+              autoRun={true}
+              style={{width: 180, height: 40}}>
+              <View style={{backgroundColor: 'green', width: 180, height: 40}}>
+                <Text style={{fontSize: 30, color: '#FFF'}}>
+                  .........................
+                </Text>
+              </View>
+            </Shimmer>
 
-          <Text style={{color: '#FFF', marginTop: 10, marginBottom: 10}}>
-            Test 5 - Shimmer + Linear gradient
-          </Text>
-          {/* Shimmer + Linear Gradient. Shimmer isn't working */}
-          <Shimmer direction={'right'}>
+            <Text style={{color: '#FFF', marginTop: 10, marginBottom: 10}}>
+              Test 4 - Shimmer on view
+            </Text>
+            {/* Shimmer on View without Text. Shimmer isn't working */}
+            <Shimmer
+              direction={'right'}
+              autoRun={true}
+              style={{width: 180, height: 40}}>
+              <View
+                style={{backgroundColor: 'green', width: 180, height: 40}}
+              />
+            </Shimmer>
+
+            <Text style={{color: '#FFF', marginTop: 10, marginBottom: 10}}>
+              Test 5 - Shimmer + Linear gradient
+            </Text>
+            {/* Shimmer + Linear Gradient. Shimmer isn't working */}
+            <Shimmer direction={'right'}>
+              <LinearGradient
+                colors={['#397C5D', '#37DD5D']}
+                start={{x: 0.0, y: 0.5}}
+                end={{x: 1.0, y: 0.5}}
+                locations={[0.0, 1.0]}
+                style={styles.linearGradient}>
+                <View style={styles.gradientView} />
+              </LinearGradient>
+            </Shimmer>
+
+            <Text style={{color: '#FFF', marginTop: 10, marginBottom: 10}}>
+              Test 6 - Linear gradient + Shimmer
+            </Text>
+            {/* Shimmer + Linear Gradient. Shimmer isn't working */}
             <LinearGradient
               colors={['#397C5D', '#37DD5D']}
               start={{x: 0.0, y: 0.5}}
               end={{x: 1.0, y: 0.5}}
               locations={[0.0, 1.0]}
               style={styles.linearGradient}>
-              <View style={styles.gradientView} />
+              <Shimmer direction={'right'}>
+                <View style={{width: 170, height: 50}} />
+              </Shimmer>
             </LinearGradient>
-          </Shimmer>
 
-          <Text style={{color: '#FFF', marginTop: 10, marginBottom: 10}}>
-            Test 6 - Linear gradient + Shimmer
-          </Text>
-          {/* Shimmer + Linear Gradient. Shimmer isn't working */}
-          <LinearGradient
-            colors={['#397C5D', '#37DD5D']}
-            start={{x: 0.0, y: 0.5}}
-            end={{x: 1.0, y: 0.5}}
-            locations={[0.0, 1.0]}
-            style={styles.linearGradient}>
-            <Shimmer direction={'right'}>
-              <View style={{width: 170, height: 50}} />
+            <Text style={{color: '#FFF', marginTop: 10, marginBottom: 10}}>
+              Test 7 - Shimmer + Image
+            </Text>
+            <Shimmer autoRun={true} direction={'right'}>
+              <Image source={shimmerBg} />
             </Shimmer>
-          </LinearGradient>
-
-          <Text style={{color: '#FFF', marginTop: 10, marginBottom: 10}}>
-            Test 7 - Shimmer + Image
-          </Text>
-          <Shimmer autoRun={true} direction={'right'}>
-            <Image source={shimmerBg} />
-          </Shimmer>
-        </View>
+          </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }
@@ -169,6 +211,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     justifyContent: 'center',
+    paddingVertical: 10,
   },
   header: {
     paddingHorizontal: 34,
@@ -178,7 +221,7 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     flex: 1,
-    marginTop: 50,
+    marginTop: 20,
     alignItems: 'center',
   },
   linearGradient: {
@@ -212,5 +255,17 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     borderWidth: 2,
     borderRadius: 5,
+  },
+  inner: {
+    height: 30,
+    // width: '100%',
+    backgroundColor: 'green',
+  },
+  label: {
+    fontSize: 23,
+    color: 'black',
+    position: 'absolute',
+    // zIndex: 1,
+    alignSelf: 'center',
   },
 });
