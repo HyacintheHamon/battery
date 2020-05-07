@@ -46,27 +46,23 @@ export default class App extends Component {
             <Text style={{color: '#FFF', marginTop: 10, marginBottom: 10}}>
               New Test - Animated View with Shimmer
             </Text>
-            <View
-              style={{
-                backgroundColor: 'grey',
-                borderColor: '#fff',
-                borderWidth: 1,
-                width: 200,
-              }}>
-              <Shimmer direction={'right'} opacity={0.9}>
-                <LinearGradient
-                  colors={['#397C5D', '#37DD5D']}
-                  start={{x: 0.0, y: 0.5}}
-                  end={{x: 1.0, y: 0.5}}
-                  locations={[0.0, 1.0]}
-                  style={[
-                    styles.linearGradient,
-                    {width: this.state.progressStatus + '%'},
-                  ]}></LinearGradient>
-              </Shimmer>
-              <Animated.Text style={styles.label}>
-                {this.state.progressStatus}%
-              </Animated.Text>
+            <View style={styles.batteryContainer}>
+              <View style={styles.batteryTip} />
+              <View style={styles.inner}>
+                <Shimmer direction={'right'} opacity={0.9}>
+                  <LinearGradient
+                    colors={['#397C5D', '#37DD5D']}
+                    start={{x: 0.0, y: 0.5}}
+                    end={{x: 1.0, y: 0.5}}
+                    locations={[0.0, 1.0]}
+                    style={[
+                      styles.batteryLinearGradient,
+                      {width: this.state.progressStatus + '%'},
+                    ]}
+                  />
+                </Shimmer>
+              </View>
+              <Text style={styles.label}>{this.state.progressStatus}%</Text>
             </View>
 
             {/* Regular progress bar */}
@@ -260,15 +256,43 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 5,
   },
+
+  //battery
+  batteryContainer: {
+    borderWidth: 1,
+    borderColor: '#fff',
+    padding: 8,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  batteryTip: {
+    position: 'absolute',
+    borderWidth: 1,
+    borderRightColor: '#fff',
+    borderTopColor: '#fff',
+    borderBottomColor: '#fff',
+    height: 20,
+    zIndex: 1,
+    right: -12,
+    width: 12,
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
+    borderLeftColor: '#000',
+  },
   inner: {
-    height: 30,
-    // backgroundColor: 'green',
+    backgroundColor: 'grey',
+    borderColor: '#fff',
+    borderWidth: 0.7,
+    width: 200,
+    borderRadius: 3,
+  },
+  batteryLinearGradient: {
+    height: 50,
   },
   label: {
     fontSize: 23,
     color: '#fff',
     position: 'absolute',
-    // zIndex: 1,
-    alignSelf: 'center',
   },
 });
