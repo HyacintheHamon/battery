@@ -48,18 +48,21 @@ export default class App extends Component {
             </Text>
             <View
               style={{
-                backgroundColor: '#fff',
+                backgroundColor: 'grey',
                 borderColor: '#fff',
                 borderWidth: 1,
                 width: 200,
               }}>
-              <Shimmer direction={'right'}>
-                <Animated.View
+              <Shimmer direction={'right'} opacity={0.9}>
+                <LinearGradient
+                  colors={['#397C5D', '#37DD5D']}
+                  start={{x: 0.0, y: 0.5}}
+                  end={{x: 1.0, y: 0.5}}
+                  locations={[0.0, 1.0]}
                   style={[
-                    styles.inner,
+                    styles.linearGradient,
                     {width: this.state.progressStatus + '%'},
-                  ]}
-                />
+                  ]}></LinearGradient>
               </Shimmer>
               <Animated.Text style={styles.label}>
                 {this.state.progressStatus}%
@@ -228,6 +231,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 5,
+    height: 40,
   },
   buttonView: {
     flexDirection: 'row',
@@ -258,12 +262,11 @@ const styles = StyleSheet.create({
   },
   inner: {
     height: 30,
-    // width: '100%',
-    backgroundColor: 'green',
+    // backgroundColor: 'green',
   },
   label: {
     fontSize: 23,
-    color: 'black',
+    color: '#fff',
     position: 'absolute',
     // zIndex: 1,
     alignSelf: 'center',
